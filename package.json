@@ -1,15 +1,14 @@
 {
-  "name": "site-fpv-monorepo",
-  "version": "0.1.0",
+  "name": "site-fpv",
   "private": true,
+  "workspaces": ["apps/web"],
   "packageManager": "pnpm@8.15.4",
+  "engines": { "node": ">=18.17" },
   "scripts": {
-    "dev": "pnpm --filter web dev",
-    "build": "pnpm --filter web build",
-    "start": "pnpm --filter web start",
-    "lint": "pnpm --filter web lint",
-    "test": "pnpm --filter web test"
-  },
-  "devDependencies": {},
-  "workspaces": ["apps/*"]
+    "preinstall": "node -e \"require('child_process').execSync('corepack enable && corepack prepare pnpm@8.15.4 --activate',{stdio:'inherit'})\" || echo corepack-skip",
+    "ci:install": "pnpm install --frozen-lockfile || npm install --workspaces",
+    "dev": "pnpm --filter web dev || npm run -w apps/web dev",
+    "build": "pnpm --filter web build || npm run -w apps/web build",
+    "start": "pnpm --filter web start || npm run -w apps/web start"
+  }
 }
